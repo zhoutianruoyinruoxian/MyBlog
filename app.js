@@ -1,8 +1,9 @@
 
 
-var fs = require('fs')
-var express = require('express');
-var app = express();
+const fs = require('fs')
+const express = require('express');
+const app = express();
+require('./test.js')
 // app.get('*',function(req,res){
 // 	console.log(req.path)
 // 	fs.readFile("/myblog/"+req.path, function (err, data) {
@@ -36,8 +37,8 @@ app.all('/server/*',function (req, res, next) {
 });
 
 
-var server = app.listen(8085,function(){
-	var host = server.address().address;
-	var port = server.address().address;
-	console.log('Example app listening at http://%s:%s', host, port);
+const server = app.listen(8800,function(){
+	const host = server.address().address;
+	const port = server.address().port;
+	console.log('Example app listening at http://'+host+':'+port);
 })
