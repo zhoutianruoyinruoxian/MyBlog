@@ -3,7 +3,7 @@
 const fs = require('fs')
 const express = require('express');
 const app = express();
-require('./test.js')
+// require('./test.js')
 // app.get('*',function(req,res){
 // 	console.log(req.path)
 // 	fs.readFile("/myblog/"+req.path, function (err, data) {
