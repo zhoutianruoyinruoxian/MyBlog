@@ -37,7 +37,7 @@ app.all('/server/*',function (req, res, next) {
 });
 
 
-const server = app.listen(8800,function(){
+const server = app.listen(80,function(){
 	const host = server.address().address;
 	const port = server.address().port;
 	console.log('Example app listening at http://'+host+':'+port);
