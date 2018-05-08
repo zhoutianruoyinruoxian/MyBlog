@@ -1,5 +1,7 @@
 const fs = require('fs')
 const express = require('express');
+const path = require('path');
+const url = require('url');
 const app = express();
 
 // 引入body-parser模块使得req.body可以使用
@@ -54,6 +56,9 @@ app.all('/server/*',function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
     require('./'+req.path+'.js')(req, res, next)
+});
+app.get('/public/*',function (req, res, next) {
+    res.sendFile(path.resolve(__dirname,`./${req.path}`));
 });
 
 
