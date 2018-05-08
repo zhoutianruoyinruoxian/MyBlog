@@ -29,8 +29,8 @@ module.exports = function(req,res){
 	}else{
 		data = {
 			"result": 0,
-			"msg": "params name is required!"
-		}
+			"msg": "params name is required!",
+		};
 		res.send(data)
-	}
-}
+	};
+};
