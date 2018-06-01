@@ -1,11 +1,13 @@
 const fs = require('fs')
 const express = require('express');
+const Koa = require('koa');
 const path = require('path');
 const url = require('url');
-const app = express();
+// const app = express();
+const app = new Koa();
 
 // 引入body-parser模块使得req.body可以使用
-const bodyParser = require('body-parser');
+const bodyParser = require('koa-bodyparser');
 // app.use(bodyParser());
 // 设置上传限制
 app.use(bodyParser.json({limit: '10mb'})); // for parsing application/json
