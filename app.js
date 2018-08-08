@@ -1,17 +1,18 @@
-const fs = require('fs')
-const express = require('express');
-const Koa = require('koa');
-const path = require('path');
+const fs = require('fs');
 const url = require('url');
-// const app = express();
+const path = require('path');
+const Koa = require('koa');
 const app = new Koa();
 
-// 引入body-parser模块使得req.body可以使用
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require('koa-bodyparser'); // 引入body-parser模块使得req.body可以使用
 // app.use(bodyParser());
 // 设置上传限制
-app.use(bodyParser.json({limit: '10mb'})); // for parsing application/json
-app.use(bodyParser.urlencoded({limit: '10mb', extended: true }));
+app.use(bodyParser({ jsonLimit: '10mb' })); // for parsing application/json
+const router = require('koa-route');
+
+const defalutOption = require('./config/index.js');
+const util = require('./util/index.js');
+// app.use(bodyParser.urlencoded({limit: '10mb', extended: true }));
 
 // require('./test.js')
 // app.get('*',function(req,res){
@@ -39,33 +40,40 @@ app.use(bodyParser.urlencoded({limit: '10mb', extended: true }));
 //     }
 // });
 // 打印request头部
-app.get('/headers', function(req,res){
-  res.set('Content-Type','text/plain');
-  let s = '';
-  for(let name in req.headers) {
-    s += `${name}: ${req.headers[name]}\n`;
-  }
-  res.send(s);
-  console.log(req.headers)
-});
-app.disable('x-powered-by');// response时禁用服务器的详细信息
+// app.use(router.get('/headers', function(req,res){
+//   res.set('Content-Type','text/plain');
+//   let s = '';
+//   for(let name in req.headers) {
+//     s += `${name}: ${req.headers[name]}\n`;
+//   }
+//   res.send(s);
+//   console.log(req.headers)
+// }));
+
+// app.disable('x-powered-by');// response时禁用服务器的详细信息
 // app.use(express.json({limit: '10mb'}));// 设置请求体大小
 
 
-app.all('/server/*',function (req, res, next) {
+app.use(router.all('/api/*', function (ctx, next) {
 
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    require('./'+req.path+'.js')(req, res, next)
-});
-app.get('/public/*',function (req, res, next) {
-    res.sendFile(path.resolve(__dirname,`./${req.path}`));
-});
+  ctx.set('Access-Control-Allow-Origin', '*');
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  if (fs.existsSync('./server' + ctx.path + '.js')) {
+    require('./server' + ctx.path + '.js')(ctx)
+  } else {
+    ctx.status = 404;
+    ctx.body = `can not found path: ctx.path`;
+  }
+}));
+// app.use(router.get('/public/*',function (req, res, next) {
+//     res.sendFile(path.resolve(__dirname,`./${req.path}`));
+// }))
 
 
-const server = app.listen(8085,function(){
-	const host = server.address().address;
-	const port = server.address().port;
-	console.log('Example app listening at http://'+host+':'+port);
+const server = app.listen(defalutOption.PORT, function () {
+  // const host = server.address().address;
+  const port = server.address().port;
+  const ip = util.getIPAdress();
+  console.log('Example app listening at http://' + ip + ':' + port);
 })

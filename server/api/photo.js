@@ -1,5 +1,10 @@
 const fs = require('fs');
+const os = require('os');
 const mysql = require('../db/util.js');
+const util = require('../../util/index.js');
+const ip = util.getIPAdress();
+ 
+
 
 module.exports = function (req,res) {
   if(req.body.photo){
@@ -15,7 +20,7 @@ module.exports = function (req,res) {
         code: "200",
         message:'',
         data: {
-          img:'127.0.0.1:8085/public/images/avatar.jpg'
+          img:`${ip}:8085/public/images/avatar.jpg`
         }
       };
       res.set('Content-Type','text/plain');// 设置响应头

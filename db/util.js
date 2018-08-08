@@ -1,24 +1,24 @@
-const mysql = require('mysql');  
+const mysql = require('mysql');
 
-let client = mysql.createConnection({  
-	user: 'root',  
-	password: '9468abcd',  
-}); 
+let client = mysql.createConnection({
+	user: 'root',
+	password: '9468abcd',
+});
 
-client.connect(err=>{
-	if(err){
+client.connect(err => {
+	if (err) {
 		console.log("链接失败");
-		throw(err);
-	}else{
+		throw (err);
+	} else {
 		console.log("链接成功");
 	}
 });
-let operate={
+let operate = {
 	database: '',
-	table:'',
+	table: '',
 	//选择数据库
-	use(name){
-		if(!name) {
+	use(name) {
+		if (!name) {
 			console.error('数据库名称不能为空，选择失败');
 			return
 		}
@@ -26,15 +26,15 @@ let operate={
 		this.database = name;
 		return this;
 	},
-	creatDatabase(name){
-		if(!name) {
+	creatDatabase(name) {
+		if (!name) {
 			console.error('数据库名称不能为空，创建失败');
 			return
 		}
-		client.query(`CREATE DATABASE ${name}`,(err,result)=>{
-			if(err){
+		client.query(`CREATE DATABASE ${name}`, (err, result) => {
+			if (err) {
 				throw err
-			}else{
+			} else {
 				this.database = name;
 				console.log(`${name} 创建成功`);
 				return this;
@@ -42,60 +42,60 @@ let operate={
 		});
 	},
 	//选择表格
-	selectTable(name){
-		if(!name) {
+	selectTable(name) {
+		if (!name) {
 			console.error('表格名称不能为空，选择失败');
 			return
-		}else{
+		} else {
 			this.table = name;
 			console.log(`当前选中 ${name}`);
 			return this;
 		}
 	},
-	creatTable(name,data){
-		if(!name) {
+	creatTable(name, data) {
+		if (!name) {
 			console.error('表格名称不能为空，创建失败');
 			return
 		}
-		client.query(`CREATE TABLE ${name} (${data})`,(err,result)=>{
-			if(err){
+		client.query(`CREATE TABLE ${name} (${data})`, (err, result) => {
+			if (err) {
 				throw err
-			}else{
+			} else {
 				this.table = name;
 				console.log(`${name} 创建成功`);
 				return this;
 			}
 		});
 	},
-	update(){
+	update() {
 
 	},
-	insert(data){
-		let key=[],value=[];
-		for (let i in data){
+	insert(data) {
+		let key = [], value = [];
+		for (let i in data) {
 			key.push(i);
 			value.push(`'${data[i]}'`);
 		}
 		key = key.join(', ');
 		value = value.join(', ');
-		client.query(`INSERT INTO ${this.table} (${key}) VALUES (${value})`,(err,result)=>{
-			if(err){
+		client.query(`INSERT INTO ${this.table} (${key}) VALUES (${value})`, (err, result) => {
+			if (err) {
 				throw err
-			}else{
+			} else {
 				console.log(`${this.table} 更新成功`);
 				return this;
 			}
 		});
 	},
-	select({column='*',clause,offset,limit,sucess}){
+	select({ column = '*', clause, offset, limit, sucess }) {
 		let query = `SELECT ${column} FROM ${this.table}`;
 		clause && (query += ` WHERE ${clause}`);
 		offset && (query += ` OFFSET ${offset}`);
 		limit && (query += ` LIMIT ${limit}`);
-		client.query(query,(err,result)=>{
-			if(err){
+		client.query(query, (err, result) => {
+			if (err) {
 				throw err
-			}else{
+			} else {
 				console.log(`选择成功`);
 				sucess && sucess(result);
 				return this;
