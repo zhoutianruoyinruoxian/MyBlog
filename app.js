@@ -55,15 +55,14 @@ const util = require('./util/index.js');
 
 
 app.use(router.all('/api/*', function (ctx, next) {
-
   ctx.set('Access-Control-Allow-Origin', '*');
   ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  if (fs.existsSync('./server' + ctx.path + '.js')) {
-    require('./server' + ctx.path + '.js')(ctx)
+  if (fs.existsSync('./control' + ctx.path + '.js')) {
+    require('./control' + ctx.path + '.js')(ctx)
   } else {
     ctx.status = 404;
-    ctx.body = `can not found path: ctx.path`;
+    ctx.body = `can not found path: ${ctx.path}`;
   }
 }));
 // app.use(router.get('/public/*',function (req, res, next) {
