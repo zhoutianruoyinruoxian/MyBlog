@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "supervisor app.js",
+    "testw": "supervisor testw.js",
     "db": "supervisor mysql.js"
   },
   "repository": {
@@ -20,10 +21,13 @@
   "homepage": "https://github.com/zhoutianruoyinruoxian/MyBlog#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "eslint": "^5.4.0",
     "express": "^4.16.3",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
     "koa-route": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-static-cache": "^5.1.2",
     "mysql": "^2.16.0"
   }
 }
