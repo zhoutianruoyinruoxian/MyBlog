@@ -1,19 +1,19 @@
 const Koa = require('koa');
 const app = new Koa();
-const UserModel = require('./model/user.js');
-const user = new UserModel();
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
-async function a(ctx){
-  await user.login(ctx.query.name).then((data) => {
-    const ddd = {...data[0]};
-    console.log(ddd,333)
-    ctx.body = ddd;
-   })
-}
+
 
 app.use(async ctx => {
-  await a(ctx);
-  // ctx.body = 'Hello33';
+  ctx.body = process.pid+'进程正在运行';
 });
 
-app.listen(9999);
+if (cluster.isMaster) {
+  console.log('主进程' + process.pid + '正在运行');
+  // cluster.fork();
+}
+  app.listen(9999);
+
+
+

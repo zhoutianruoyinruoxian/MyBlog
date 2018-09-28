@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor app.js",
+    "start": "supervisor --inspect app.js",
     "testw": "supervisor testw.js",
     "db": "supervisor mysql.js"
   },
@@ -21,13 +21,20 @@
   "homepage": "https://github.com/zhoutianruoyinruoxian/MyBlog#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
     "eslint": "^5.4.0",
     "express": "^4.16.3",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
+    "koa-mysql-session": "^0.0.2",
     "koa-route": "^3.2.0",
     "koa-router": "^7.4.0",
+    "koa-session": "^5.9.0",
+    "koa-session-minimal": "^3.0.4",
     "koa-static-cache": "^5.1.2",
-    "mysql": "^2.16.0"
+    "mocha": "^5.2.0",
+    "mysql": "^2.16.0",
+    "node-rsa": "^1.0.1",
+    "supertest": "^3.3.0"
   }
 }
