@@ -34,12 +34,12 @@ app.use(sessionConfig(app))
 //   await next();
 // });
 
+
 app.use(router.all('/api/*', async (ctx, next) => {
   console.log(ctx.origin, ctx.path, 333)
   // ctx.set('Access-Control-Allow-Origin', '*');
   // ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   // ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  console.log(ctx.session, 111)
   if (ctx.path != '/api/user' && (!ctx.session || !ctx.session.userinfo)) {
     ctx.body = '用户未登录';
     ctx.status = 401;
@@ -57,19 +57,23 @@ app.use(router.all('/api/*', async (ctx, next) => {
 //     res.sendFile(path.resolve(__dirname,`./${req.path}`));
 // }))
 
+/**
+ * @desc http服务
+ */
+const server = app;
 
-// const server = app;
-
-const options = {
-  key: fs.readFileSync('./openssl/ryans-key.pem'),
-  cert: fs.readFileSync('./openssl/ryans-cert.pem')
-};
-const server = https.createServer(options, app.callback());
+/**
+ * @desc https服务
+ */
+// const options = {
+//   key: fs.readFileSync('./openssl/ryans-key.pem'),
+//   cert: fs.readFileSync('./openssl/ryans-cert.pem')
+// };
+// const server = https.createServer(options, app.callback());
 
 const result = server.listen(config.PORT, function () {
-    // const host = server.address().address;
-    console.log(result.address(),222)
-    const port = server.address().port;
-    const ip = util.getIPAdress();
-    console.log('Example app listening at http://' + ip + ':' + port);
-  })
+  // const host = server.address().address;
+  const port = result.address().port;
+  const ip = util.getIPAdress();
+  console.log('Example app listening at http://' + ip + ':' + port);
+})

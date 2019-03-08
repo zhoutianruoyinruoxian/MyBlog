@@ -14,7 +14,7 @@ const sessionMysqlConfig = {
 
 // 存放sessionId的cookie配置
 const cookie = {
-  maxAge: 6000, // cookie有效时长
+  maxAge: 60000, // cookie有效时长
   autoCommit: true, // (boolean) automatically commit headers (default true) 
   overwrite: true, // (boolean) can overwrite or not (default true)
   // expires: '',  // cookie失效时间

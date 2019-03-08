@@ -6,17 +6,21 @@ const util = new Util();
 
 const login = async (ctx) => {
   const { name, password } = ctx.query;
+  if (!name && !password) {
+    ctx.body = util.resReturn(null, 500, '用户名和密码不能为空');
+    return;
+  }
   if (ctx.session.userinfo) {
-      ctx.body = util.resReturn(null, 200, `${ctx.session.userinfo.name} 已登录，请勿重复登录`);
-      return;
+    ctx.body = util.resReturn(null, 500, `${ctx.session.userinfo.name} 已登录，请勿重复登录`);
+    return;
   }
   let data = await user.getDataByName(name);
   if (data.length === 0) {
-    ctx.body = util.resReturn(null, 200, '用户名不存在');
+    ctx.body = util.resReturn(null, 500, '用户名不存在');
     return;
   }
   data = data[0];
-  ctx.session && (ctx.session.userinfo = data);  
+  ctx.session && (ctx.session.userinfo = data);
   if (data.password === password) {
     ctx.body = util.resReturn(null, 200, '登陆成功');
   } else {
